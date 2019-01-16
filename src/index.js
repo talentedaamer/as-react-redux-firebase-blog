@@ -6,11 +6,30 @@ import * as serviceWorker from './serviceWorker';
 
 
 // setup redux
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+// root reducer
+import rootReducer from './store/reducers/rootReducer';
+// provider from react-redux
+import { Provider } from 'react-redux';
+// thunk middleware
+import thunk from 'redux-thunk';
 
-const store = createStore();
+import { reduxFirestore, getFirestore } from 'redux-firestore';
+import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
+import fbConfig from './config/fbConfig';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const store = createStore( rootReducer,
+    compose(
+        applyMiddleware(thunk.withExtraArgument({
+            getFirebase,
+            getFirestore
+        })),
+        reduxFirestore(fbConfig),
+        reactReduxFirebase(fbConfig)
+    )
+);
+
+ReactDOM.render( <Provider store={store}><App /></Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -10,7 +10,7 @@ import { grey } from '@material-ui/core/colors';
 
 const styles = theme => ({
     footer: {
-        backgroundColor: grey[200],
+        backgroundColor: grey[100],
         marginTop: theme.spacing.unit * 8,
         padding: `${theme.spacing.unit * 4}px 0`,
     },

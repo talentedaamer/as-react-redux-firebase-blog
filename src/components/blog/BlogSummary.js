@@ -3,37 +3,35 @@ import React from "react";
 // import layout components
 import {
     Card,
-    CardHeader,
     CardContent,
     Typography,
+    withStyles,
 } from '@material-ui/core';
 
-const styles = {
+const styles = theme => ({
     card: {
-        marginBottom: 24,
-    }
-};
+        marginBottom: theme.spacing.unit * 4,
+        padding: theme.spacing.unit * 2,
+    },
+    postHeader: {
+        marginBottom: theme.spacing.unit * 2,
+    },
+});
 
-const BlogSummary = () => {
+const BlogSummary = ( { classes, post } ) => {
 
     return (
-        <Card style={styles.card}>
-            <CardHeader
-                // avatar={
-                //     <Avatar aria-label="Recipe">
-                //         A
-                //     </Avatar>
-                // }
-                title="Shrimp and Chorizo Paella"
-                subheader="September 14, 2016"
-            />
+        <Card className={classes.card}>
             <CardContent>
-                <Typography component="p">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis fuga ipsa itaque iure maiores molestias necessitatibus nulla omnis porro, quidem quisquam, suscipit, voluptatibus? Aliquam delectus error nisi non quia quisquam.
-                </Typography>
+                <div className={classes.postHeader}>
+                    <Typography variant="h6" component="h1">{post.postTitle}</Typography>
+                    <Typography color="textSecondary" component="p">{post.postDate.toDateString()} - by Aamer</Typography>
+                </div>
+
+                <Typography component="p">{post.postContent}</Typography>
             </CardContent>
         </Card>
     );
 };
 
-export default BlogSummary;
+export default withStyles(styles)(BlogSummary);

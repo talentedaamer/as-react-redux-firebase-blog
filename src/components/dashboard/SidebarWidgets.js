@@ -2,44 +2,41 @@ import React from "react";
 
 import {
     Card,
-    CardHeader,
     CardContent,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText
+    Typography,
+    withStyles,
 } from '@material-ui/core';
 
+// widgets
+import WidgetRecentPosts from '../blog/widgets/WidgetRecentPosts';
+import WidgetSearchBar from '../blog/widgets/WidgetSearchBar';
 
-import {AddBox, Power } from '@material-ui/icons';
+const styles = theme => ({
+    card: {
+        marginBottom: theme.spacing.unit * 4,
+        padding: theme.spacing.unit * 2,
+    },
+    widgetTitle: {
+        marginBottom: theme.spacing.unit * 2,
+    },
+})
 
-const SidebarWidgets = () => {
+const SidebarWidgets = ( { classes } ) => {
     return (
-        <Card>
+        <div className="widgets-wrap">
 
-            <List component="nav">
-                <ListItem button>
-                    <ListItemIcon>
-                        <AddBox />
-                    </ListItemIcon>
-                    <ListItemText primary="Create Post" />
-                </ListItem>
-                <ListItem button>
-                    <ListItemIcon>
-                        <Power />
-                    </ListItemIcon>
-                    <ListItemText primary="Drafts" />
-                </ListItem>
-            </List>
+            <Card className={classes.card}>
+                <CardContent>
+                    <Typography className={classes.widgetTitle} variant="h6" component="h3">Search Blog</Typography>
+                    <WidgetSearchBar/>
+                </CardContent>
+            </Card>
 
-            <CardContent>
-                <CardHeader
-                    title="Widget Title.."
-                    subheader="September 14, 2016"
-                />
-            </CardContent>
-        </Card>
+            <Card className={classes.card}>
+                <WidgetRecentPosts/>
+            </Card>
+        </div>
     );
 };
 
-export default SidebarWidgets;
+export default withStyles(styles)(SidebarWidgets);

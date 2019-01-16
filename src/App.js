@@ -14,6 +14,8 @@ import Footer from './components/layout/Footer';
 // auth components
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
+// blog components
+import CreatePost from './components/blog/CreatePost';
 
 const styles = theme => ({
     layout: {
@@ -45,6 +47,7 @@ class App extends Component {
                             <Route path="/post/:id" component={PostDetails}/>
                             <Route path="/signin" component={SignIn}/>
                             <Route path="/signup" component={SignUp}/>
+                            <Route path="/create-post" component={CreatePost}/>
                         </Switch>
                     </div>
                     <Footer/>
