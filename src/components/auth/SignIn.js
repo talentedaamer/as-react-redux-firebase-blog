@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { signIn } from '../../store/actions/AuthActions';
+
 import {
     Paper,
     withStyles,
@@ -10,6 +13,10 @@ import {
 } from '@material-ui/core';
 
 import {Email, Lock} from '@material-ui/icons'
+
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { Redirect } from 'react-router-dom';
 
 const styles = theme => ({
     signupCard: {
@@ -47,11 +54,17 @@ class SignIn extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.state);
+        // console.log(this.props);
+        this.props.signIn( this.state );
     }
 
     render() {
-        const {classes} = this.props;
+        const { classes, auth, authError } = this.props;
+
+        if ( auth.uid ) {
+            return <Redirect to={'/'} />
+        }
+
         return (
             <Paper className={classes.signupCard}>
                 <form onSubmit={this.handleSubmit}>
@@ -77,10 +90,30 @@ class SignIn extends React.Component {
                         <Button type="submit" variant="outlined" color="primary"
                                 style={{textTransform: "none"}}>Sign In</Button>
                     </Grid>
+
+                    {/* display message */}
+                    { authError ? <p>{authError}</p> : null }
                 </form>
             </Paper>
         );
     }
 }
 
-export default withStyles(styles)(SignIn);
+const mapStateToProps = ( state ) => {
+    return {
+        authError: state.auth.authError,
+        auth: state.firebase.auth,
+    }
+}
+
+const mapDispatchToProps = ( dispatch ) => {
+    return {
+        signIn: (creds) => dispatch(signIn(creds))
+    }
+}
+
+
+export default compose(
+    withStyles(styles),
+    connect( mapStateToProps, mapDispatchToProps)
+)(SignIn);

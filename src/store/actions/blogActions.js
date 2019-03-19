@@ -9,7 +9,7 @@ const createBlogPost = ( post ) => {
             postDate: new Date(),
             postStatus: 'publish',
             postUrl: 'todo-dynamic-url'
-        }).then( ( doc ) => {
+        }).then( ( post ) => {
             dispatch({
                 type: 'CREATE_POST',
                 payload: post,

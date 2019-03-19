@@ -8,6 +8,8 @@ import {
     withStyles,
 } from '@material-ui/core';
 
+import { Link } from 'react-router-dom';
+
 const styles = theme => ({
     card: {
         marginBottom: theme.spacing.unit * 4,
@@ -19,13 +21,14 @@ const styles = theme => ({
 });
 
 const BlogSummary = ( { classes, post } ) => {
-
     return (
         <Card className={classes.card}>
             <CardContent>
                 <div className={classes.postHeader}>
-                    <Typography variant="h6" component="h1">{post.postTitle}</Typography>
-                    <Typography color="textSecondary" component="p">{post.postDate.toDateString()} - by Aamer</Typography>
+                    <Link to={ '/post/' + post.id } key={post.id}>
+                        <Typography variant="h6" component="h1">{post.postTitle}</Typography>
+                    </Link>
+                    {/*<Typography color="textSecondary" component="p">{post.postDate} - by Aamer</Typography>*/}
                 </div>
 
                 <Typography component="p">{post.postContent}</Typography>

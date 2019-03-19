@@ -9,6 +9,10 @@ import {
 
 import {Face, Email, Lock} from '@material-ui/icons'
 
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { Redirect } from 'react-router-dom';
+
 const styles = theme => ({
     loginCard: {
         marginTop: theme.spacing.unit * 8,
@@ -51,7 +55,12 @@ class SignUp extends React.Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const { classes, auth } = this.props;
+
+        if ( auth.uid ) {
+            return <Redirect to={'/'} />
+        }
+
         return (
             <Paper className={classes.loginCard}>
                 <form onSubmit={this.handleSubmit}>
@@ -101,4 +110,13 @@ class SignUp extends React.Component {
     }
 }
 
-export default withStyles(styles)(SignUp);
+const mapStateToProps = (state) => {
+    return {
+        auth: state.firebase.auth
+    }
+}
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, null)
+)(SignUp);

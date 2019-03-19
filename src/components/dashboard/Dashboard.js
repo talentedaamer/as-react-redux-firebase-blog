@@ -9,13 +9,12 @@ import SidebarWidgets from "./SidebarWidgets";
 // connect app with redux store
 import { connect } from 'react-redux';
 
+import { firestoreConnect } from 'react-redux-firebase';
+import { compose } from 'redux';
+
 class Dashboard extends Component {
     render() {
-
         const { blog } = this.props;
-
-        console.log( 'dashboard blog ', blog );
-
         return (
             <div>
                 <Grid container={true} spacing={24}>
@@ -33,9 +32,17 @@ class Dashboard extends Component {
 
 // map redux store to props
 const mapStateToProps = (state) => {
+    // console.log( state.firestore.ordered.blog );
     return {
-        blog: state.blog.posts
+        blog: state.firestore.ordered.blog
     }
 }
 
-export default connect(mapStateToProps)(Dashboard);
+export default compose(
+    connect(mapStateToProps),
+    firestoreConnect([
+        {
+            collection: 'blog'
+        }
+    ])
+)(Dashboard);

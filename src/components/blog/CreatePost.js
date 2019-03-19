@@ -10,6 +10,8 @@ import {
 import createBlogPost from '../../store/actions/blogActions';
 
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { Redirect } from 'react-router-dom';
 
 const styles = theme => ({
     loginCard: {
@@ -52,7 +54,12 @@ class CreatePost extends React.Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const { classes, auth } = this.props;
+
+        if ( !auth.uid ) {
+            return <Redirect to={'/signin'}/>
+        }
+
         return (
             <Paper className={classes.loginCard}>
                 <form onSubmit={this.handleSubmit}>
@@ -76,6 +83,12 @@ class CreatePost extends React.Component {
     }
 }
 
+const mapStateToProps = ( state ) => {
+    return {
+        auth: state.firebase.auth
+    }
+}
+
 const mapDispatchToProps = ( dispatch ) => {
     return {
         createBlogPost: ( post ) => {
@@ -83,4 +96,7 @@ const mapDispatchToProps = ( dispatch ) => {
         }
     }
 }
-export default connect(null, mapDispatchToProps)(withStyles(styles)(CreatePost));
+export default compose(
+    withStyles(styles),
+    connect( mapStateToProps, mapDispatchToProps )
+)(CreatePost);

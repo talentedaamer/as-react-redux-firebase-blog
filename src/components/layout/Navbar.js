@@ -1,5 +1,8 @@
 import React from "react";
 
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+
 import {
     Typography,
     Toolbar,
@@ -28,8 +31,11 @@ const styles = theme => ({
 });
 
 const Navbar = (props) => {
+    const { classes, auth } = props;
 
-    const { classes } = props;
+    console.log( 'navbbar auth', auth );
+
+    let links = auth.uid ? <SignedInLinks/> : <SignedOutLinks/>;
 
     return (
         <div className={classes.root}>
@@ -38,12 +44,22 @@ const Navbar = (props) => {
                     <Typography variant="h6" color="inherit" className={classes.grow}>
                         React FireBlog
                     </Typography>
-                    <SignedOutLinks/>
-                    <SignedInLinks/>
+                    { links }
                 </Toolbar>
             </AppBar>
         </div>
     );
 };
 
-export default withStyles(styles)(Navbar);
+const mapStateToProps = ( state ) => {
+    console.log('navbar state', state );
+
+    return {
+        auth: state.firebase.auth
+    }
+}
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps)
+)(Navbar);
